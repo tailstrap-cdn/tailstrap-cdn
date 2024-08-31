@@ -1,7 +1,7 @@
 
 # tailstrap
 
-**Tailstrap** is a customizable web development framework combining Tailwind CSS, Bootstrap, and other essential tools for building modern web applications. Tailstrap offers a flexible, highly-configurable approach to styling and responsive design.
+**Tailstrap** is a experiment to see how  combining multiple CSS Frameworks together would look.
 
 ## Features
 
