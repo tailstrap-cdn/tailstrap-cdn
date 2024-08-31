@@ -1,0 +1,25 @@
+{% assign current_directory = include.files %}
+{% assign directory_paths = "" %}
+
+{% for file in current_directory %}
+  {% assign file_path = file.path | remove: site.baseurl %}
+  {% if file_path contains "/" %}
+    {% assign file_parts = file_path | split: "/" %}
+    {% assign directory_path = file_parts[0] %}
+    {% if directory_paths contains directory_path %}
+      {% continue %}
+    {% endif %}
+    {% assign directory_paths = directory_paths | append: directory_path | append: "," %}
+    <li class="mt-2">
+      <span class="font-semibold">{{ directory_path }}:</span>
+      <ul class="list-disc pl-6">
+        {% assign sub_files = current_directory | where: "path", "/{{ directory_path }}/" %}
+        {% include directory_listing.html files=sub_files directories=directories %}
+      </ul>
+    </li>
+  {% else %}
+    <li class="mt-1">
+      <a href="{{ file_path }}" class="text-blue-600 hover:underline">{{ file_path }}</a>
+    </li>
+  {% endif %}
+{% endfor %}
