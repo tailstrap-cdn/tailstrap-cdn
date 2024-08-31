@@ -13,7 +13,7 @@
     <h1 class="text-4xl font-bold mb-4">{{ page.title }}</h1>
     <ul class="list-disc pl-5">
       {% for file in site.static_files %}
-        <li><a href="./{{ file.path }}" class="text-blue-500 hover:underline">{{ file.path }}</a></li>
+        <li><a href=".{{ file.path }}" class="text-blue-500 hover:underline">{{ file.path }}</a></li>
       {% endfor %}
     </ul>
   </div>
