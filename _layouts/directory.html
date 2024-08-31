@@ -2,16 +2,44 @@
 <html>
 <head>
   <title>{{ page.title }}</title>
-  <!-- Add Tailwind CSS CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.6/dist/tailwind.min.css">
+  <!-- Add the latest version of Tailwind CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css">
 </head>
 <body class="bg-gray-100 text-gray-900">
   <div class="container mx-auto p-4">
     <h1 class="text-3xl font-bold mb-4">{{ page.title }}</h1>
 
-    <h2 class="text-2xl font-semibold mb-2">Directory Listing</h2>
     <ul class="list-disc pl-6">
-      {% include directory_listing.html %}
+      {% assign files = site.static_files %}
+      {% assign directories = "" %}
+
+      {% for file in files %}
+        {% assign file_path = file.path | remove: site.baseurl %}
+        {% if file_path contains "/" %}
+          {% assign path_parts = file_path | split: "/" %}
+          {% assign dir = path_parts[0] %}
+          {% unless directories contains dir %}
+            {% assign directories = directories | append: dir | append: "," %}
+            <li class="mt-2">
+              <span class="font-semibold">{{ dir }}/</span>
+              <ul class="list-disc pl-6">
+                {% for sub_file in files %}
+                  {% assign sub_file_path = sub_file.path | remove: site.baseurl %}
+                  {% if sub_file_path contains dir and sub_file_path != file_path %}
+                    <li class="mt-1">
+                      <a href="{{ sub_file_path }}" class="text-blue-600 hover:underline">{{ sub_file_path | remove: dir | remove: "/" }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+          {% endunless %}
+        {% else %}
+          <li class="mt-1">
+            <a href="{{ file_path }}" class="text-blue-600 hover:underline">{{ file_path }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
     </ul>
   </div>
 </body>
